@@ -67,6 +67,10 @@ namespace graphics {
 		{
 			Fractal::decreaseIteration();
 		}
+		else if (key_ == GLFW_KEY_TAB && action_ == GLFW_PRESS)
+		{
+			Fractal::setFractalType();
+		}
 	}
 
 	void Window::clear() const

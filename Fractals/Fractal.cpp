@@ -27,19 +27,19 @@ namespace
 	}
 }
 // static initializor
-int graphics::Fractal::m_iteration = 0;
+int graphics::Fractal::m_iteration = 0;	
+graphics::FractalType graphics::Fractal::m_type = graphics::FractalType::FRACTAL_KOCH_SNOWFLAKE;
 
-
-graphics::Fractal::Fractal(GLint iteration, GLdouble length, FractalType type)
-{
-
-	m_iteration = iteration;
-	m_length = length;
-	m_type = type;
-}
 
 graphics::Fractal::~Fractal()
 {
+	// nothing to clear
+}
+
+void graphics::Fractal::setStartingPoint(double x_, double y_)
+{
+	m_x = x_;
+	m_y = y_;
 }
 
 double graphics::Fractal::iterationLength(int iteration)
@@ -47,7 +47,7 @@ double graphics::Fractal::iterationLength(int iteration)
 
 	// Length calculation
 	double length = m_length;
-	while (iteration != 1)
+	while (iteration != 0)
 	{
 		length = length / 3;
 		iteration--;
@@ -62,7 +62,9 @@ void graphics::Fractal::generateString()
 	// F draw line
 	// - rotate 60 degree right.
 	// + rotate 60 degree left.
-	const std::string kochSnowFlake = "F-F++F-F++F-F++F-F++F-F++F-F";	
+	//const std::string kochSnowFlake = "F-F++F-F++F-F++F-F++F-F++F-F";	
+	const std::string kochSnowFlake = "F++F++F";
+
 	const std::string realKoch = "F+F--F+F";
 
     std::string koch = "F-F++F-F";
@@ -79,7 +81,7 @@ void graphics::Fractal::generateString()
 		break;
 
 	}
-	for (auto i = 0; i < m_iteration - 1; i++)
+	for (auto i = 0; i < m_iteration ; i++)
 	{
 		for (int j = 0; j < m_production.length(); j++)
 		{
@@ -114,10 +116,11 @@ void graphics::Fractal::draw()
 	const double PI = 3.14159265;
 	//get the length for each iteration
 	
-	double x = 400;
-	double y = 540;
+
 	double angle = 0;
-	glMoveTo(x, y);
+	glMoveTo(m_x, m_y);
+	double x = m_x;
+	double y = m_y;
 
 	double length = iterationLength(m_iteration);
 	
@@ -144,10 +147,37 @@ void graphics::Fractal::draw()
 
 void graphics::Fractal::increaseIteration()
 {
-	m_iteration++;
+	if (m_iteration >= 6)
+	{
+		// do nothing.
+	}
+	else
+	{
+		m_iteration++;
+	}
 }
 
 void graphics::Fractal::decreaseIteration()
 {
-	m_iteration--;
+	if (m_iteration <= 0)
+	{
+		// do nothing.
+	}
+	else
+	{
+		m_iteration--;
+	}
+}
+
+void graphics::Fractal::setFractalType()
+{
+	if (m_type == FRACTAL_KOCH)
+	{
+		m_type = FRACTAL_KOCH_SNOWFLAKE;
+	}
+	else if (m_type == FRACTAL_KOCH_SNOWFLAKE)
+	{
+		m_type = FRACTAL_KOCH;
+	}
+
 }
